@@ -7,7 +7,6 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 
 import { assets as rawAssets } from "../../assets/assets_frontend/assets";
-import { useAppDispatch, useAppSelector } from "../../store/userStore/hooks";
 
 interface User {
   name: string;
@@ -23,7 +22,6 @@ const assets = rawAssets as any;
 
 const Navbar: React.FC = () => {
   const router = useRouter();
-  const dispatch = useAppDispatch();
 
   const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
@@ -68,7 +66,7 @@ const Navbar: React.FC = () => {
   useEffect(() => {
     if (token && !userData && !loading) {
     }
-  }, [token, userData, loading, dispatch]);
+  }, [token, userData, loading]);
 
 
   const userImgSrc: string | StaticImageData | undefined =

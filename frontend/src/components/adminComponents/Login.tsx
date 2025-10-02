@@ -1,7 +1,6 @@
 "use client"
 import React, { useState, FormEvent, ChangeEvent } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setAToken } from '../../store/adminStore/slices/adminSlice';
 import axios, { AxiosError } from "axios";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
@@ -66,7 +65,6 @@ const Login: React.FC = () => {
           console.log("data.data.token: ", token);
           
           localStorage.setItem("aToken", token);
-          dispatch(setAToken(token));
 
           toast.success("Login successful!");
           router.push("/admin/")
@@ -86,7 +84,6 @@ const Login: React.FC = () => {
           console.log("data.data.token: ", token);
           
           localStorage.setItem("dToken", token);
-          dispatch(setAToken(token));
 
           toast.success("Login successful!");
           router.push("/")

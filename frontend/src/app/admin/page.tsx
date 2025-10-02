@@ -1,12 +1,10 @@
 "use client";
 
-import { RootState } from "../../store/adminStore/store";
-import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Home() {
-  const { aToken } = useSelector((state: RootState) => state.admin);
+  const aToken = localStorage.getItem("aToken");
   const router = useRouter();
   const [isChecking, setIsChecking] = useState(true);
 
