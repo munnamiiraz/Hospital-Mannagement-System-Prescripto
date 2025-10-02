@@ -5,7 +5,7 @@ import { ApiError } from "../utils/ApiError";
 declare global {
   namespace Express {
     interface Request {
-      admin?: any; // replace 'any' with a more specific type
+      admin?: unknown; 
     }
   }
 }
@@ -34,7 +34,7 @@ const authAdmin = (req: Request, res: Response, next: NextFunction): void => {
     req.admin = decoded;
     next();
   } catch (error: any) {
-    console.error("authAdmin error:", error.message);
+    console.error("authAdmin error:", error?.message);
     res.status(401).json(new ApiError(401, "Unauthorized: Invalid token"));
     return;
   }

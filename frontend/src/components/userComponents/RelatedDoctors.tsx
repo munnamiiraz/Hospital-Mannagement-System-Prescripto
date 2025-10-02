@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import Image, { StaticImageData } from 'next/image';
+import React from 'react';
 import { useRouter } from 'next/navigation';
 
 
@@ -8,7 +7,7 @@ interface RelatedDoctorsProps {
   docId: string;
 }
 
-const RelatedDoctors: React.FC<RelatedDoctorsProps> = ({ speciality, docId }) => {
+const RelatedDoctors: React.FC<RelatedDoctorsProps> = (/*{ speciality, docId }*/) => {
   // const { doctors } = useAppSelector((state) => state.doctors);
   // const [relDoc, setRelDoc] = useState<Doctor[]>([]);
   const router = useRouter();
@@ -22,12 +21,12 @@ const RelatedDoctors: React.FC<RelatedDoctorsProps> = ({ speciality, docId }) =>
   //   }
   // }, [doctors, speciality, docId]);
 
-  const handleDoctorClick = (doctorId: string | undefined) => {
-    if (doctorId) {
-      router.push(`/appointment/${doctorId}`);
-      window.scrollTo(0, 0);
-    }
-  };
+  // const handleDoctorClick = (doctorId: string | undefined) => {
+  //   if (doctorId) {
+  //     router.push(`/appointment/${doctorId}`);
+  //     window.scrollTo(0, 0);
+  //   }
+  // };
 
   const handleViewMore = () => {
     router.push("/doctors");

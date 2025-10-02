@@ -1,6 +1,5 @@
 "use client"
 import React, { useState, FormEvent, ChangeEvent } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import axios, { AxiosError } from "axios";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
@@ -43,9 +42,8 @@ const Login: React.FC = () => {
 
 
 
-  const { backendUrl } = useSelector((state: RootState) => state.admin);
+  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
   
-  const dispatch = useDispatch();
 
   const onSubmitHandler = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();

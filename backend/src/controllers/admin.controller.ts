@@ -10,7 +10,23 @@ import Appointment from "../models/appointment.model"
 import { ApiError } from "../utils/ApiError";
 import { ApiResponse } from "../utils/ApiResponce";
 import {Complain} from "../models/complain.model";
-import { AuthRequest } from "./user.controller";
+// import { AuthRequest } from "./user.controller";
+
+// import { Request } from 'express';
+// import { Types } from 'mongoose';
+
+interface AuthRequest extends Request {
+  user?: {
+    _id?: string | Types.ObjectId;
+    id?: string;
+    userId?: string;
+  };
+  admin?: {
+    _id?: string | Types.ObjectId;
+    id?: string;
+    userId?: string;
+  };
+}
 
 interface MulterRequest extends Request {
   file?: Express.Multer.File;
@@ -342,8 +358,8 @@ const loginAdmin = async (req: Request, res: Response): Promise<Response> => {
   }
 };
 
-export const complainFeedback = async (
-  req: AuthRequest,
+const complainFeedback = async (
+  req: Request,
   res: Response
 ): Promise<void> => {
   try {
@@ -490,7 +506,7 @@ const deleteDoctor = async (req: Request, res: Response): Promise<Response> => {
 };
 
 const cancelAppointment = async (
-  req: AuthRequest,
+  req: Request,
   res: Response
 ): Promise<void> => {
   try {
@@ -622,7 +638,8 @@ export {
   deleteDoctor,
   allDoctorsAppointment,
   cancelAppointment,
-  allComplains
+  allComplains,
+  complainFeedback
 };
 
 // Export types for use in other files

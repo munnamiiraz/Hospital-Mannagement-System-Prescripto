@@ -5,10 +5,9 @@ import {
   loginAdmin,
   changeAvailability,
   allDoctorsAppointment,
-  cancelAppointment,
   allComplains,
+  cancelAppointment,
   complainFeedback
-
 } from "../controllers/admin.controller";
 import { upload } from "../middleware/multer.middleware";
 import authAdmin from "../middleware/authAdmin.middleware";
