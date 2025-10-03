@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { toast } from "react-toastify";
+import toast, { Toaster } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 
@@ -105,56 +105,58 @@ export default function MyProfile() {
 
 
   const updateUserProfileData = async () => {
-    try {
-      setUploading(true);
+  try {
+    setUploading(true);
 
-      if (!formData.name || !formData.phone || !formData.dob || !formData.gender) {
-        toast.error("Please fill all required fields");
-        return;
-      }
+    // FormData 
+    const data = new FormData();
 
-      const data = new FormData();
-      data.append("name", formData.name);
-      data.append("phone", formData.phone);
-      data.append("address", formData.address || "");
-      data.append("gender", formData.gender);
-      data.append("dob", formData.dob);
+    if (formData.name) data.append("name", formData.name);
+    if (formData.phone) data.append("phone", formData.phone);
+    if (formData.address) data.append("address", formData.address);
+    if (formData.gender) data.append("gender", formData.gender);
+    if (formData.dob) data.append("dob", formData.dob);
 
-      if (image) {
-        data.append("avatar", image);
-      }
-      console.log(data);
-      
-      const response = await axios.put(
-        process.env.NEXT_PUBLIC_BACKEND_URL + "/api/user/update-profile",
-        data,
-        { 
-          headers: { 
-            token,
-            'Content-Type': 'multipart/form-data'  // Important
-          } 
-        }
-      );
-
-      if (response.data.success) {
-        toast.success("Profile updated successfully");
-        setIsEdit(false);
-        setImage(null);
-        await getUserProfile();
-      } else {
-        toast.error(response.data.message);
-      }
-    } catch (error) {
-      console.error("Error updating profile:", error);
-      if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data?.message || "Error updating profile");
-      } else {
-        toast.error("Error updating profile");
-      }
-    } finally {
-      setUploading(false);
+    if (image) {
+      data.append("avatar", image);
     }
-  };
+
+    if ([...data.keys()].length === 0) {
+      toast.error("Please provide at least one field to update");
+      return;
+    }
+
+    const response = await axios.put(
+      process.env.NEXT_PUBLIC_BACKEND_URL + "/api/user/update-profile",
+      data,
+      {
+        headers: {
+          token,
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    if (response.data.success) {
+      toast.success("Profile updated successfully");
+      setIsEdit(false);
+      setImage(null);
+      await getUserProfile();
+    } else {
+      toast.error(response.data.message);
+    }
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    if (axios.isAxiosError(error)) {
+      toast.error(error.response?.data?.message || "Error updating profile");
+    } else {
+      toast.error("Error updating profile");
+    }
+  } finally {
+    setUploading(false);
+  }
+};
+
 
 
   if (loading) {
@@ -180,6 +182,12 @@ export default function MyProfile() {
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
+      <Toaster
+        position="top-right"
+        reverseOrder={false}
+      />
+
+
       <div className="max-w-4xl mx-auto">
         <div className="bg-white rounded-lg shadow-sm p-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-6">My Profile</h1>

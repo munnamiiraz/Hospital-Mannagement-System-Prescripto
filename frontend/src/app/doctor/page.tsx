@@ -3,8 +3,10 @@
 import React, { useState, useEffect } from 'react';
 import axios, { AxiosResponse } from 'axios';
 import { Calendar, Clock, Plus, Trash2, Save, Loader, CheckCircle, X } from 'lucide-react';
-import { toast, Toaster } from 'react-hot-toast';
+import  toast, { Toaster } from 'react-hot-toast';
 import { useRouter } from "next/navigation";
+import type { AppProps } from 'next/app';
+
 
 
 interface AvailableSlot {

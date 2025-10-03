@@ -304,17 +304,27 @@ const updateProfile = async (req: AuthRequest, res: Response): Promise<void> => 
       return;
     }
 
-    const { name, phone, address, dob, gender }: UpdateProfileRequest = req.body;
-    
-    if (!name || !phone || !dob || !gender) {
-      res.status(400).json(new ApiError(400, "Data missing"));
-      return;
-    }
+    // Dynamic
+    const updateData: Partial<{
+      name: string;
+      phone: string;
+      address: string;
+      dob: string;
+      gender: string;
+      avatar: { url: string; publicId: string };
+    }> = {};
 
-    let avatarData;
+    const { name, phone, address, dob, gender } = req.body;
+
+    if (name) updateData.name = name;
+    if (phone) updateData.phone = phone;
+    if (address) updateData.address = address;
+    if (dob) updateData.dob = dob;
+    if (gender) updateData.gender = gender;
+
+    // Avatar থাকলে
     if (req.file) {
       try {
-        // Upload to cloudinary
         const result = await cloudinary.uploader.upload(req.file.path, {
           folder: "users",
           width: 500,
@@ -322,9 +332,9 @@ const updateProfile = async (req: AuthRequest, res: Response): Promise<void> => 
           crop: "fill",
         });
 
-        avatarData = {
+        updateData.avatar = {
           url: result.secure_url,
-          publicId: result.public_id
+          publicId: result.public_id,
         };
       } catch (error) {
         console.error("Cloudinary upload error:", error);
@@ -332,11 +342,21 @@ const updateProfile = async (req: AuthRequest, res: Response): Promise<void> => 
       }
     }
 
+    if (Object.keys(updateData).length === 0) {
+      res.status(400).json(new ApiError(400, "No data provided for update"));
+      return;
+    }
+
     const updatedUser = await User.findByIdAndUpdate(
       userId,
-      { name, phone, address, dob, gender, ...(avatarData && { avatar: avatarData }) },
+      { $set: updateData },
       { new: true, select: "-password" }
     );
+
+    if (!updatedUser) {
+      res.status(404).json(new ApiError(404, "User not found"));
+      return;
+    }
 
     res.status(200).json(new ApiResponse(200, updatedUser, "Profile updated successfully"));
   } catch (error: unknown) {
@@ -345,6 +365,7 @@ const updateProfile = async (req: AuthRequest, res: Response): Promise<void> => 
     res.status(500).json(new ApiError(500, "Error in updateProfile: " + errorMessage));
   }
 };
+
 
 
 //   Book Appointment

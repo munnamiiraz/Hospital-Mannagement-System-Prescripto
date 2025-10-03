@@ -2,6 +2,8 @@ import "./globals.css";
 import Navbar from "../components/userComponents/Navbar";
 import Footer from "../components/userComponents/Footer";
 import { Outfit } from "next/font/google";
+import { Toaster } from 'react-hot-toast';
+
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -13,7 +15,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={outfit.variable}>
       <body>
         <Navbar  />
-        <main>{children}</main>
+        <main>
+          {children}
+          <Toaster position="top-right" />
+          </main>
         <Footer />
       </body>
     </html>

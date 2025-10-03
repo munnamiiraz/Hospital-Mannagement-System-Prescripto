@@ -1,7 +1,7 @@
 "use client"
 import React, { useState, FormEvent, ChangeEvent } from 'react';
 import axios, { AxiosError } from "axios";
-import { toast } from "react-toastify";
+import toast, { Toaster } from 'react-hot-toast';
 import { useRouter } from "next/navigation";
 
 
@@ -70,6 +70,16 @@ const Login: React.FC = () => {
 
   return (
     <form onSubmit={onSubmitHandler} className='min-h-[80vh] flex items-center'>
+      <Toaster 
+        position="top-right"
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: '#fff',
+            color: '#333',
+          },
+        }}
+      />
       <div className='flex flex-col gap-3 m-auto p-8 items-start min-w-[340px] sm:min-w-96 border rounded-xl text-[#5E5E5E] text-sm shadow-lg'>
         <p className='text-2xl font-semibold m-auto'>
           <span className='text-primary'>Doctor</span> Login
